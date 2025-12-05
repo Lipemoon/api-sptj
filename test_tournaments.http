@@ -1,0 +1,118 @@
+# ================================
+# TOURNAMENTS HTTP TESTS
+# ================================
+
+# GET / - API ENDPOINTS
+GET http://localhost/api-sptj/api/
+
+###
+
+# GET ALL TOURNAMENTS - SUCCESS
+GET http://localhost/api-sptj/api/tournaments
+Accept: application/json
+
+###
+
+# POST CREATE TOURNAMENT - SUCCESS
+POST http://localhost/api-sptj/api/tournaments
+Content-Type: application/json
+
+{
+   "name": "OI",
+   "game": "Naruto",
+   "categoryByGenre": "Masculino"
+}
+
+###
+
+# POST CREATE TOURNAMENT - NO SUCCESS (GENERO INVÁLIDO)
+POST http://localhost/api-sptj/api/tournaments
+Content-Type: application/json
+
+{
+   "name": "OI",
+   "game": "Naruto",
+   "categoryByGenre": "Masculini"
+}
+
+###
+
+# GET TOURNAMENT BY ID - SUCCESS
+GET http://localhost/api-sptj/api/tournaments/1
+Accept: application/json
+
+###
+
+# GET TOURNAMENT BY ID - NOT FOUND
+GET http://localhost/api-sptj/api/tournaments/0
+Accept: application/json
+
+###
+
+# GET TOURNAMENTS BY NAME - MATCHES
+GET http://localhost/api-sptj/api/tournaments?name=torneio
+Accept: application/json
+
+###
+
+# PUT UPDATE TOURNAMENT - SUCCESS
+PUT http://localhost/api-sptj/api/tournaments/1
+Content-Type: application/json
+
+{
+  "name": "OI",
+  "game": "Naruto",
+  "categoryByGenre": "Feminino"
+}
+
+###
+
+# PATCH TOURNAMENT name - SUCCESS
+PUT http://localhost/api-sptj/api/tournaments/1
+Content-Type: application/json
+
+{
+  "name": "Torneio Marcelinho",
+}
+
+###
+
+# DELETE TOURNAMENT - SUCCESS
+DELETE http://localhost/api-sptj/api/tournaments/4
+
+###
+
+# DELETE TOURNAMENT - NOT FOUND
+DELETE http://localhost/api-sptj/api/tournaments/0
+
+###
+
+# START TOURNAMENT - SUCCESS
+POST http://localhost/api-sptj/api/tournaments/1/start
+
+###
+
+# START TOURNAMENT - NO SUCCESS (EXCEPTION 'Torneio já está iniciado')
+POST http://localhost/api-sptj/api/tournaments/1/start
+
+###
+
+# PLAY MATCH TOURNAMENT - SUCCESS
+POST http://localhost/api-sptj/api/tournaments/1/playMatch
+
+###
+
+# PLAY MATCH TOURNAMENT - NO SUCCESS (EXCEPTION 'Há uma partida em andamento neste torneio!')
+POST http://localhost/api-sptj/api/tournaments/1/playMatch
+
+###
+
+# CHOOSE WINNER MATCH TOURNAMENT - SUCCESS
+POST http://localhost/api-sptj/api/tournaments/1/chooseWinner/{idWinner}
+
+###
+
+# CHOOSE WINNER MATCH TOURNAMENT - NO SUCCESS (EXCEPTION "O id do vencedor informado não existe nesta partida!")
+POST http://localhost/api-sptj/api/tournaments/1/chooseWinner/1
+
+###

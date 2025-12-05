@@ -1,0 +1,93 @@
+# ================================
+# CHARACTERS HTTP TESTS
+# ================================
+
+# CREATE CHARACTER - SUCCESS
+POST http://localhost/api-sptj/api/characters
+Content-Type: application/json
+
+{
+  "name": "Kakashi",
+  "gender": "Masculino",
+  "game": "Naruto"
+}
+###
+
+# CREATE CHARACTER - INVALID BODY (missing name)
+POST http://localhost/api-sptj/api/characters
+Content-Type: application/json
+
+{
+    "gender": "Masculino",
+    "game": "Naruto"
+}
+
+### 
+
+# GET ALL CHARACTERS - SUCCESS
+GET http://localhost/api-sptj/api/characters
+Accept: application/json
+
+### 
+
+# GET CHARACTER BY ID - SUCCESS
+GET http://localhost/api-sptj/api/characters/1
+Accept: application/json
+
+### 
+
+# GET CHARACTER BY ID - NOT FOUND
+GET http://localhost/api-sptj/api/characters/99
+Accept: application/json
+
+### 
+
+# GET CHARACTER BY NAME - MATCHES
+GET http://localhost/api-sptj/api/characters?name=na
+Accept: application/json
+
+### 
+
+# UPDATE CHARACTER - SUCCESS
+PUT http://localhost/api-sptj/api/characters/1
+Content-Type: application/json
+
+{
+  "name": "Hinata",
+  "gender": "Feminino",
+  "game": "Naruto"
+}
+
+### 
+
+# UPDATE CHARACTER - INVALID GENDER
+PUT http://localhost/api-sptj/api/characters/2
+Content-Type: application/json
+
+{
+  "name": "Hinata",
+  "gender": "Feminini",
+  "game": "Naruto"
+}
+
+### 
+
+# PATCH CHARACTER name - SUCCESS
+PATCH http://localhost/api-sptj/api/characters/1
+Content-Type: application/json
+
+{
+  "name": "Sakura"
+}
+
+###
+
+# DELETE CHARACTER - SUCCESS
+DELETE http://localhost/api-sptj/api/characters/1
+
+### 
+
+# DELETE CHARACTER - NOT FOUND
+DELETE http://localhost/api-sptj/api/characters/11
+
+### 
