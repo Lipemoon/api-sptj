@@ -30,10 +30,10 @@ class CharacterService {
     }
 
     public function create(Character $character) {
-        if ($character->getGender() !== "Masculino" || $character->getGender() !== "Feminino") {
-            throw new APIException("Gênero inválido!", 400);
+        if ($character->getGender() === "Masculino" || $character->getGender() === "Feminino") {
+            return $this->characterRepository->createCharacter($character);
         } 
-        return $this->characterRepository->createCharacter($character);
+        throw new APIException("Gênero inválido!", 400);
     }
 
      public function update(int $id, Character $character) {
@@ -41,10 +41,10 @@ class CharacterService {
         if (!$existing) {
             throw new APIException("Personagem não encontrado.", 404);
         }
-        if ($character->getGender() !== "Masculino" || $character->getGender() !== "Feminino") {
-            throw new APIException("Gênero inválido!", 400);
+        if ($character->getGender() === "Masculino" || $character->getGender() === "Feminino") {
+            return $this->characterRepository->updateCharacter($character);
         } 
-        return $this->characterRepository->updateCharacter($character);
+        throw new APIException("Gênero inválido!", 400);
     }
 
     public function delete(int $id) {
@@ -62,19 +62,19 @@ class CharacterService {
         if (!$character) {
             throw new APIException("Personagem não encontrado.", 404);
         }
-        if ($character->getGender() !== "Masculino" || $character->getGender() !== "Feminino") {
+        if ($character->getGender() === "Masculino" || $character->getGender() === "Feminino") {
+            if (isset($updates["name"])) {
+                $character->setName($updates["name"]);   
+            }
+            if (isset($updates["gender"])) {
+                $character->setGender($updates["gender"]);
+            } 
+            if (isset($updates["gameOrigin"])) {
+                $character->setGame($updates["gameOrigin"]);
+            } 
+        } else {
             throw new APIException("Gênero inválido!", 400);
-        } 
-        if (isset($updates["name"])) {
-         $character->setName($updates["name"]);   
         }
-        if (isset($updates["gender"])) {
-            $character->setGender($updates["gender"]);
-        } 
-        if (isset($updates["gameOrigin"])) {
-            $character->setGame($updates["gameOrigin"]);
-        } 
-        
         return $this->characterRepository->updateCharacter($character);
     }
 }

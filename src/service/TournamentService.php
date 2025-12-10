@@ -33,13 +33,13 @@ class TournamentService {
     }
 
     public function createTournament(Tournament $tournament) {
-        if ($tournament->getCategoryByGenre() !== "Masculino" || 
-            $tournament->getCategoryByGenre() !== "Feminino" || 
-            $tournament->getCategoryByGenre() !== "Masculino e Feminino" ||
-            $tournament->getCategoryByGenre() !== "Feminino e Masculino") {
-            throw new APIException("Categoria de Gênero inválida!", 400);
+        if ($tournament->getCategoryByGenre() === "Masculino" || 
+            $tournament->getCategoryByGenre() === "Feminino" || 
+            $tournament->getCategoryByGenre() === "Masculino e Feminino" ||
+            $tournament->getCategoryByGenre() === "Feminino e Masculino") {
+            return $this->tournamentRepository->createTournament($tournament);
         } 
-        return $this->tournamentRepository->createTournament($tournament);
+        throw new APIException("Categoria de Gênero inválida!", 400);
     }
 
      public function updateTournament(int $id, Tournament $tournament): Tournament {
@@ -49,13 +49,13 @@ class TournamentService {
             throw new APIException("Torneio não encontrado!", 404);
         }
 
-        if ($tournament->getCategoryByGenre() !== "Masculino" || 
-            $tournament->getCategoryByGenre() !== "Feminino" || 
-            $tournament->getCategoryByGenre() !== "Masculino e Feminino" ||
-            $tournament->getCategoryByGenre() !== "Feminino e Masculino") {
-            throw new APIException("Categoria de Gênero inválida!", 400);
+        if ($tournament->getCategoryByGenre() === "Masculino" || 
+            $tournament->getCategoryByGenre() === "Feminino" || 
+            $tournament->getCategoryByGenre() === "Masculino e Feminino" ||
+            $tournament->getCategoryByGenre() === "Feminino e Masculino") {
+            return $this->tournamentRepository->updateTournament($tournament);
         } 
-        return $this->tournamentRepository->updateTournament($tournament);
+        throw new APIException("Categoria de Gênero inválida!", 400);
     }
 
     public function deleteTournament(int $id) {

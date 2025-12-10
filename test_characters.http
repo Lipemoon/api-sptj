@@ -2,6 +2,11 @@
 # CHARACTERS HTTP TESTS
 # ================================
 
+# GET / - API ENDPOINTS
+GET http://localhost/api-sptj/
+
+###
+
 # CREATE CHARACTER - SUCCESS
 POST http://localhost/api-sptj/api/characters
 Content-Type: application/json
@@ -9,7 +14,7 @@ Content-Type: application/json
 {
   "name": "Kakashi",
   "gender": "Masculino",
-  "game": "Naruto"
+  "game": "  "
 }
 ###
 
@@ -31,7 +36,7 @@ Accept: application/json
 ### 
 
 # GET CHARACTER BY ID - SUCCESS
-GET http://localhost/api-sptj/api/characters/1
+GET http://localhost/api-sptj/api/characters/3
 Accept: application/json
 
 ### 
@@ -49,7 +54,7 @@ Accept: application/json
 ### 
 
 # UPDATE CHARACTER - SUCCESS
-PUT http://localhost/api-sptj/api/characters/1
+PUT http://localhost/api-sptj/api/characters/6
 Content-Type: application/json
 
 {
@@ -61,7 +66,7 @@ Content-Type: application/json
 ### 
 
 # UPDATE CHARACTER - INVALID GENDER
-PUT http://localhost/api-sptj/api/characters/2
+PUT http://localhost/api-sptj/api/characters/6
 Content-Type: application/json
 
 {
@@ -73,7 +78,7 @@ Content-Type: application/json
 ### 
 
 # PATCH CHARACTER name - SUCCESS
-PATCH http://localhost/api-sptj/api/characters/1
+PATCH http://localhost/api-sptj/api/characters/6
 Content-Type: application/json
 
 {
@@ -83,7 +88,7 @@ Content-Type: application/json
 ###
 
 # DELETE CHARACTER - SUCCESS
-DELETE http://localhost/api-sptj/api/characters/1
+DELETE http://localhost/api-sptj/api/characters/2
 
 ### 
 

@@ -46,11 +46,11 @@ class TournamentController {
 
         $id = $request->getId();
 
-        if (!is_numeric($id)) {
-            $id = null;
-        } else {
-            $id = (int) $id;
+        if ($id !== null && !ctype_digit($id)) {
+            throw new APIException("O ID deve ser um número inteiro válido!", 400);
         }
+
+        $id = $id !== null ? (int)$id : null;
     
         if ($id !== null) {
             switch ($method) {
@@ -65,6 +65,7 @@ class TournamentController {
                         game: $dados["game"],
                         categoryByGenre: $dados["categoryByGenre"]
                     );
+                    $tournament->setIdTournament($id);
                     $response = $this->tournamentService->updateTournament($id, $tournament);
                     Response::send($response);
                     return;
@@ -107,26 +108,36 @@ class TournamentController {
         }   
     }
 
+    private function validarStringObrigatoria(string $valor, string $campo): string {
+        $valor = trim($valor);
+
+        if ($valor === '') {
+            throw new APIException("O campo '$campo' não pode ser vazio!", 400);
+        }
+
+        return $valor;
+    }
+    
     private function validateBody(array $body): array {
-        $tournament = [];
+       $required = ["name", "categoryByGenre", "game"];
 
-        if (!isset($body["name"])) {
-            throw new APIException("Name is required!", 400);
+        foreach ($required as $campo) {
+            if (!isset($body[$campo])) {
+                throw new APIException("Campo '$campo' é obrigatório!", 400);
+            }
+            if (!is_string($body[$campo])) {
+                throw new APIException("Campo '$campo' deve ser uma string!", 400);
+            }
+
+            // valida vazio ou só com espaços
+            $body[$campo] = $this->validarStringObrigatoria($body[$campo], $campo);
         }
 
-        if (!isset($body["game"])) {
-            throw new APIException("game is required!", 400);
-        }
-
-        if (!isset($body["categoryByGenre"])) {
-            throw new APIException("categoryByGenre is required!", 400);
-        }
-
-        $tournament["name"] = $body["name"];
-        $tournament["game"] = $body["game"];
-        $tournament["categoryByGenre"] = $body["categoryByGenre"];
-        
-        return $tournament;
+        return [
+            "name" => $body["name"],
+            "gender" => $body["categoryByGenre"],
+            "game" => $body["game"]
+        ];
     }
 
     private function validatePatchBody(array $body): array {
@@ -134,6 +145,18 @@ class TournamentController {
             throw new APIException("Nenhum campo fornecido para atualizar!", 400);
         }
 
+        if (!is_string($body["name"])) {
+            throw new APIException("Name tem que ser uma string!", 400);
+        }
+
+        if (!is_string($body["categoryByGenre"])) {
+            throw new APIException("categoryByGenre tem que ser uma string!", 400);
+        }
+
+        if (!is_string($body["game"])) {
+            throw new APIException("Game tem que ser uma string!", 400);
+        }
+        
         $campos = ["name", "categoryByGenre", "game"];
 
         $updates = [];

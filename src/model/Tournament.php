@@ -66,7 +66,7 @@ class Tournament implements JsonSerializable {
     }
 
     //métodos SET
-    public function setId(int $id): void {
+    public function setIdTournament(int $id): void {
         $this->id = $id;
     }  
     public function setName(string $name): void {

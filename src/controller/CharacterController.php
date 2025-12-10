@@ -19,6 +19,11 @@ class CharacterController {
         $id = $request->getId();
         $method = $request->getMethod();
 
+        if ($id !== null && !ctype_digit($id)) {
+            throw new APIException("O ID deve ser um número inteiro válido!", 400);
+        }
+
+        $id = $id !== null ? (int)$id : null;
         //para as rotas que possuem um id (/characters/id):
         if ($id !== null) {
             switch ($method) { 
@@ -37,6 +42,7 @@ class CharacterController {
                         gender: $dados["gender"],
                         game: $dados["game"]
                     );
+                    $character->setId($id);
                     $response = $this->characterService->update($id, $character);
                     Response::send($response);
                     break;
@@ -83,37 +89,51 @@ class CharacterController {
         }
     }
 
+    private function validarStringObrigatoria(string $valor, string $campo): string {
+        $valor = trim($valor);
+
+        if ($valor === '') {
+            throw new APIException("O campo '$campo' não pode ser vazio!", 400);
+        }
+
+        return $valor;
+    }
     
     private function validateBody(array $body): array {
-        //cria um array para os dados do character que vierem no body
-        $character = [];
-            //verifica se o nome do personagem foi informado
-            if (!isset($body["name"])) {
-                throw new APIException("Name is required!", 400);
+       $required = ["name", "gender", "game"];
+
+        foreach ($required as $campo) {
+            if (!isset($body[$campo])) {
+                throw new APIException("Campo '$campo' é obrigatório!", 400);
             }
-            //verifica se o genero do personagem foi informado
-            if (!isset($body["gender"])) {
-                throw new APIException("Gender is required!", 400);
+            if (!is_string($body[$campo])) {
+                throw new APIException("Campo '$campo' deve ser uma string!", 400);
             }
 
-            //verifica se o jogo do personagem foi informado
-            if (!isset($body["game"])) {
-                throw new APIException("Game is required!", 400);
-            }
+            // valida vazio ou só com espaços
+            $body[$campo] = $this->validarStringObrigatoria($body[$campo], $campo);
+        }
 
-            //adiciona os dados já validados
-            $character["name"] = $body["name"];
-            $character["gender"] = $body["gender"];
-            $character["game"] = $body["game"];
-        
-        return $character;
+        return [
+            "name" => $body["name"],
+            "gender" => $body["gender"],
+            "game" => $body["game"]
+        ];
     }
 
     private function validatePatchBody(array $body): array {
         if (empty($body)) {
             throw new APIException("Nenhum campo fornecido para atualizar!", 400);
         }
-
+        if (!is_string($body["name"])) {
+            throw new APIException("Name tem que ser uma string!", 400);
+        }
+        if (!is_string($body["gender"])) {
+            throw new APIException("Gender tem que ser uma string!", 400);
+        }
+        if (!is_string($body["game"])) {
+            throw new APIException("Game tem que ser uma string!", 400);
+        }
         $campos = ["name", "gender", "game"];
 
         $updates = [];

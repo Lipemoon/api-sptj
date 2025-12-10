@@ -2,11 +2,6 @@
 # TOURNAMENTS HTTP TESTS
 # ================================
 
-# GET / - API ENDPOINTS
-GET http://localhost/api-sptj/api/
-
-###
-
 # GET ALL TOURNAMENTS - SUCCESS
 GET http://localhost/api-sptj/api/tournaments
 Accept: application/json
@@ -56,11 +51,11 @@ Accept: application/json
 ###
 
 # PUT UPDATE TOURNAMENT - SUCCESS
-PUT http://localhost/api-sptj/api/tournaments/1
+PUT http://localhost/api-sptj/api/tournaments/8
 Content-Type: application/json
 
 {
-  "name": "OI",
+  "name": "OLA",
   "game": "Naruto",
   "categoryByGenre": "Feminino"
 }
@@ -68,17 +63,17 @@ Content-Type: application/json
 ###
 
 # PATCH TOURNAMENT name - SUCCESS
-PUT http://localhost/api-sptj/api/tournaments/1
+PATCH http://localhost/api-sptj/api/tournaments/7
 Content-Type: application/json
 
 {
-  "name": "Torneio Marcelinho",
+  "name": "Torneio Marcelinho"
 }
 
 ###
 
 # DELETE TOURNAMENT - SUCCESS
-DELETE http://localhost/api-sptj/api/tournaments/4
+DELETE http://localhost/api-sptj/api/tournaments/8
 
 ###
 
@@ -88,31 +83,31 @@ DELETE http://localhost/api-sptj/api/tournaments/0
 ###
 
 # START TOURNAMENT - SUCCESS
-POST http://localhost/api-sptj/api/tournaments/1/start
+POST http://localhost/api-sptj/api/tournaments/5/start
 
 ###
 
 # START TOURNAMENT - NO SUCCESS (EXCEPTION 'Torneio já está iniciado')
-POST http://localhost/api-sptj/api/tournaments/1/start
+POST http://localhost/api-sptj/api/tournaments/5/start
 
 ###
 
 # PLAY MATCH TOURNAMENT - SUCCESS
-POST http://localhost/api-sptj/api/tournaments/1/playMatch
+POST http://localhost/api-sptj/api/tournaments/5/playMatch
 
 ###
 
 # PLAY MATCH TOURNAMENT - NO SUCCESS (EXCEPTION 'Há uma partida em andamento neste torneio!')
-POST http://localhost/api-sptj/api/tournaments/1/playMatch
+POST http://localhost/api-sptj/api/tournaments/5/playMatch
 
 ###
 
 # CHOOSE WINNER MATCH TOURNAMENT - SUCCESS
-POST http://localhost/api-sptj/api/tournaments/1/chooseWinner/{idWinner}
+POST http://localhost/api-sptj/api/tournaments/5/chooseWinner/4
 
 ###
 
 # CHOOSE WINNER MATCH TOURNAMENT - NO SUCCESS (EXCEPTION "O id do vencedor informado não existe nesta partida!")
-POST http://localhost/api-sptj/api/tournaments/1/chooseWinner/1
+POST http://localhost/api-sptj/api/tournaments/5/chooseWinner/1
 
 ###
